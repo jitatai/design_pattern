@@ -9,7 +9,10 @@ import java.lang.reflect.Proxy;
  */
 public class DynamicProxyTest {
     public static void main(String[] args) {
-        AbstructSubject subject = (AbstructSubject)Proxy.newProxyInstance(AbstructSubject.class.getClassLoader(), new Class[]{AbstructSubject.class}, new DynamicProxy(new RealSubject()));
+        System.getProperties().put("sun.misc.ProxyGenerator.saveGeneratedFiles", "true");
+        AbstructSubject subject = (AbstructSubject)Proxy.newProxyInstance(AbstructSubject.class.getClassLoader(), RealSubject.class.getInterfaces(), new DynamicProxy(new RealSubject()));
+        AbstructSubject realSubject = new DynamicProxy(new RealSubject()).bind(new RealSubject());
+        realSubject.request();
         subject.request();
     }
 }
